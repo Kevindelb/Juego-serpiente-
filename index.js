@@ -184,6 +184,7 @@ function movimientoSerpiente(){
   if(record<= puntuaciontotal){
     record = puntuaciontotal
     recordMundial.innerHTML = record;
+    guardarCookie();
   }
 
 
@@ -304,11 +305,41 @@ function iniciar()
     colocarComida();
   }
 
+  function guardarCookie() {
+    const fecha = new Date();
+    fecha.setTime(fecha.getTime() + (365 * 24 * 60 * 60 * 1000));
+    document.cookie = "recordSnake=" + record + ";expires=" + fecha.toUTCString() + ";path=/";
+}
+
+ function mostrarCookie() {
+    const cookies = document.cookie.split('; ');
+    let recordGuardado = null;
+    
+    for (let i = 0; i < cookies.length; i++) {
+        if (cookies[i].startsWith('recordSnake=')) {
+            recordGuardado = cookies[i];
+            break;
+        }
+    }
+    
+    if (recordGuardado) {
+        record = parseInt(recordGuardado.split('=')[1]);
+        recordMundial.innerHTML = record;
+    }
+} 
+
 
 // MAIN
 document.addEventListener("keydown", keyDown)
 boton.addEventListener("click", iniciar)
 document.getElementById('pausePlayBtn').addEventListener('click', pause);
+window.addEventListener('load', mostrarCookie);
+  
+  
+  
  
+
+
+
 
 
